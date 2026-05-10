@@ -1,4 +1,3 @@
-/*
 const MORSE_TABLE = {
   '.-': 'a',
   '-...': 'b',
@@ -37,8 +36,25 @@ const MORSE_TABLE = {
   '----.': '9',
   '-----': '0',
 };
-*/
 
-module.exports = function decode(/* expr */) {
-  throw new Error('Not implemented');
+module.exports = function decode(expr) {
+  return expr
+    .match(/.{1,10}/g)
+    .map((symbol) => {
+      if (symbol === '**********') {
+        return ' ';
+      }
+
+      const morse = symbol
+        .match(/.{1,2}/g)
+        .map((bits) => {
+          if (bits === '10') return '.';
+          if (bits === '11') return '-';
+          return '';
+        })
+        .join('');
+
+      return MORSE_TABLE[morse];
+    })
+    .join('');
 };
